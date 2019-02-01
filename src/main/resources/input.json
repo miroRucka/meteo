@@ -1,0 +1,23 @@
+{
+  "temperature": [
+    {
+      "key": "t1",
+      "value": 23.4
+    },
+    {
+      "key": "t2",
+      "value": 7.125
+    },
+    {
+      "key": "t3",
+      "value": 20.8
+    }
+  ],
+  "pressure": 997.5618,
+  "light": 4,
+  "humidity": 43.3,
+  "location": "office ZA",
+  "locationId": "location_001",
+  "timestamp": 1549048013809,
+  "note": "poznamka"
+}
