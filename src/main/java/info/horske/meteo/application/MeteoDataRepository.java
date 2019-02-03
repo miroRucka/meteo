@@ -27,7 +27,7 @@ public class MeteoDataRepository implements info.horske.meteo.domain.MeteoDataRe
     @Override
     public void create(MeteoData meteoData) {
         if (meteoData == null) return;
-        Point.Builder result = Point.measurement("cpu").time(meteoData.getTimestamp(), TimeUnit.MILLISECONDS);
+        Point.Builder result = Point.measurement("meteo-point").time(System.currentTimeMillis(), TimeUnit.MILLISECONDS);
         influxPointBuilder.addTagIfNotEmpty(result, "location", meteoData.getLocation());
         influxPointBuilder.addTagIfNotEmpty(result, "locationId", meteoData.getLocationId());
         influxPointBuilder.addTagIfNotEmpty(result, "note", meteoData.getNote());

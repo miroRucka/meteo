@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.PreDestroy;
+
 /**
  * @author rucka
  */
@@ -36,4 +38,5 @@ public class InfluxDBConfiguration {
         logger.info("connected to url {} ping {} ", influxUrl, influxDB.ping());
         return influxDB;
     }
+
 }

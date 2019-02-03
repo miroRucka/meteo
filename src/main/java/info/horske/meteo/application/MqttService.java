@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 /**
  * @author rucka
@@ -51,5 +52,12 @@ public class MqttService implements MqttCallback {
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
+    }
+
+    @PreDestroy
+    public void onDestroy() throws Exception {
+        if (mqttClient == null || !mqttClient.isConnected()) return;
+        logger.info("shutdown from url {} clientId {} ", mqttClient.getServerURI(), mqttClient.getClientId());
+        mqttClient.disconnect();
     }
 }
