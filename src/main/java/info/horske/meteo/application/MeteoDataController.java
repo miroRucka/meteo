@@ -23,9 +23,16 @@ public class MeteoDataController {
     private MeteoDataRepository meteoDataRepository;
 
     @RequestMapping(path = "/meteo-data", method = RequestMethod.POST)
-    public ResponseEntity greeting(@RequestBody MeteoData meteoData) {
-        logger.info("data was received, size {}", String.valueOf(meteoData).length());
-        meteoDataRepository.create(meteoData);
+    public ResponseEntity meteo(@RequestBody MeteoData meteoData) {
+        logger.info("data was received, from point {}", meteoData.getLocationId());
+        meteoDataRepository.create(meteoData, true);
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    @RequestMapping(path = "/api/sensors", method = RequestMethod.POST)
+    public ResponseEntity meteoLegacy(@RequestBody MeteoData meteoData) {
+        logger.info("data was received, from point {}", meteoData.getLocationId());
+        meteoDataRepository.create(meteoData, true);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 }

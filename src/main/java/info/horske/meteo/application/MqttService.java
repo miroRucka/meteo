@@ -47,7 +47,7 @@ public class MqttService implements MqttCallback {
     public void messageArrived(String s, MqttMessage mqttMessage) {
         logger.info("data was received, size {}", mqttMessage.getPayload().length);
         MeteoData meteoData = meteoDataAssembler.from(String.valueOf(mqttMessage));
-        meteoDataRepository.create(meteoData);
+        meteoDataRepository.create(meteoData, true);
     }
 
     @Override
