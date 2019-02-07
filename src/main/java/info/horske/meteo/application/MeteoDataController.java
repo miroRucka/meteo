@@ -1,6 +1,7 @@
 package info.horske.meteo.application;
 
 import info.horske.meteo.domain.MeteoData;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,12 @@ public class MeteoDataController {
     @Autowired
     private MeteoDataRepository meteoDataRepository;
 
+    @Autowired
+    private MqttService mqttService;
+
+    @Autowired
+    private MeteoDataAssembler meteoDataAssembler;
+
     @RequestMapping(path = "/meteo-data", method = RequestMethod.POST)
     public ResponseEntity meteo(@RequestBody MeteoData meteoData) {
         logger.info("data was received, from point {}", meteoData.getLocationId());
@@ -33,6 +40,11 @@ public class MeteoDataController {
     public ResponseEntity meteoLegacy(@RequestBody MeteoData meteoData) {
         logger.info("data was received, from point {}", meteoData.getLocationId());
         meteoDataRepository.create(meteoData, true);
+        try {
+            mqttService.sendMeteoData(meteoDataAssembler.to(meteoData));
+        } catch (MqttException e) {
+            logger.error("error occurred - send meteo data to mqtt " + e.getMessage());
+        }
         return new ResponseEntity(HttpStatus.CREATED);
     }
 }

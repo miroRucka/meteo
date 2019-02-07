@@ -8,32 +8,28 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-import javax.annotation.PreDestroy;
+import org.springframework.stereotype.Component;
 
 /**
  * @author rucka
  */
-@Configuration
-public class MqttConfiguration {
+@Component
+public class MqttClientFactory {
 
-    private Logger logger = LoggerFactory.getLogger(MqttConfiguration.class);
+    private Logger logger = LoggerFactory.getLogger(MqttClientFactory.class);
 
     @Value("${spring.mqtt.url}")
-    private String mqttUrl;
+    String mqttUrl;
 
     @Value("${spring.mqtt.user}")
-    private String mqttUser;
+    String mqttUser;
 
     @Value("${spring.mqtt.password}")
-    private String mqttPassword;
+    String mqttPassword;
 
     @Value("${spring.mqtt.clientId}")
-    private String mqttClientId;
+    String mqttClientId;
 
-    @Bean
     public IMqttClient createClient() throws MqttException {
         MqttConnectOptions conOpt = new MqttConnectOptions();
         conOpt.setCleanSession(true);
@@ -41,7 +37,7 @@ public class MqttConfiguration {
         conOpt.setPassword(mqttPassword.toCharArray());
         MqttClient mqttClient = new MqttClient(mqttUrl, mqttClientId, new MemoryPersistence());
         mqttClient.connect(conOpt);
-        logger.info("connected to url {} clientId {} ", mqttUrl, mqttClientId);
+        logger.info(">> reconnected to url {} clientId {} ", mqttUrl, mqttClientId);
         return mqttClient;
     }
 }

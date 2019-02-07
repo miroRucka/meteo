@@ -35,6 +35,15 @@ public class MeteoDataAssembler {
         }
     }
 
+    public String to(MeteoData meteoData) {
+        try {
+            return objectMapper.writeValueAsString(meteoData);
+        } catch (IOException e) {
+            logger.error("error data transform json to POJO " + meteoData, e);
+            return null;
+        }
+    }
+
     public List<MeteoData> fromList(FindIterable<Document> data) {
         if (data == null) return Collections.emptyList();
         List<MeteoData> result = new ArrayList<>();
