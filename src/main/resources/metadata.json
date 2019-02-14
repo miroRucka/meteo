@@ -1,0 +1,26 @@
+[
+  {
+    "type": "temp",
+    "pointId": "location_001",
+    "sensorKey": "t2",
+    "topic": "meteo-bridge/temp/outside"
+  },
+  {
+    "type": "temp",
+    "pointId": "location_004",
+    "sensorKey": "t5",
+    "topic": "meteo-bridge/temp/living"
+  },
+  {
+    "type": "temp",
+    "pointId": "location_002",
+    "sensorKey": "t3",
+    "topic": "meteo-bridge/temp/officein"
+  },
+  {
+    "type": "hum",
+    "pointId": "location_002",
+    "sensorKey": "humidity",
+    "topic": "meteo-bridge/hum/officein"
+  }
+]

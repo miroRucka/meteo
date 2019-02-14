@@ -1,0 +1,80 @@
+{
+  "Home outside": {
+    "name": "Outside temperature",
+    "manufacturer": "Dallas Temperature",
+    "model": "ds18b20",
+    "services": [
+      {
+        "name": "Outside temperature",
+        "service": "TemperatureSensor",
+        "topic": {
+          "statusTemperature": "meteo-bridge/temp/outside"
+        },
+        "payload": {},
+        "config": {},
+        "props": {}
+      }
+    ]
+  },
+  "Living room": {
+    "name": "Living room",
+    "manufacturer": "Dallas Temperature",
+    "sensorKey":"t5",
+    "services": [
+      {
+        "name": "Living room",
+        "service": "TemperatureSensor",
+        "topic": {
+          "statusTemperature": "meteo-bridge/temp/living"
+        },
+        "payload": {},
+        "config": {},
+        "props": {}
+      }
+    ]
+  },
+  "Office": {
+    "name": "Office in temp",
+    "manufacturer": "Dallas Temperature",
+    "model": "ds18b20",
+    "services": [
+      {
+        "name": "Office in temperature",
+        "service": "TemperatureSensor",
+        "topic": {
+          "statusTemperature": "meteo-bridge/temp/officein"
+        },
+        "payload": {},
+        "config": {},
+        "props": {}
+      },
+      {
+        "name": "Office in humidity",
+        "service": "HumiditySensor",
+        "topic": {
+          "statusHumidity": "meteo-bridge/hum/officein"
+        },
+        "payload": {},
+        "config": {},
+        "props": {}
+      }
+    ]
+  },
+  "Office": {
+    "name": "Office in hum",
+    "manufacturer": "Assair",
+    "model": "am2320B",
+    "services": [
+      {
+        "name": "Office in",
+        "service": "HumiditySensor",
+        "topic": {
+          "statusHumidity": "meteo-bridge/hum/officein"
+        },
+        "payload": {},
+        "config": {},
+        "props": {}
+      }
+    ]
+  }
+}

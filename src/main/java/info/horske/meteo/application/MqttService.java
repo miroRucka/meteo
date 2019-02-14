@@ -49,6 +49,13 @@ public class MqttService implements MqttCallback {
         mqttClient.publish(topic, new MqttMessage(meteoData.getBytes()));
     }
 
+    public void publish(String topic, Object object) throws MqttException {
+        if (mqttClient == null || !mqttClient.isConnected()) {
+            setUp();
+        }
+        mqttClient.publish(topic, new MqttMessage(String.valueOf(object).getBytes()));
+    }
+
 
     @Override
     public void connectionLost(Throwable throwable) {
@@ -62,7 +69,7 @@ public class MqttService implements MqttCallback {
 
     @Override
     public void messageArrived(String s, MqttMessage mqttMessage) {
-        logger.info("data was received, size {}", mqttMessage.getPayload().length);
+        logger.info("data was received from mqtt topic {}, size {}", topic, mqttMessage.getPayload().length);
         //MeteoData meteoData = meteoDataAssembler.from(String.valueOf(mqttMessage));
         //meteoDataRepository.create(meteoData, true);
     }
