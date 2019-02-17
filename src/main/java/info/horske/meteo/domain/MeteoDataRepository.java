@@ -14,4 +14,6 @@ public interface MeteoDataRepository {
 
     List<MeteoData> readLatestByDate(Date fromTime);
 
+    info.horske.meteo.application.MeteoData readLast(String pointId);
+
 }

@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.Map;
@@ -23,6 +20,7 @@ import java.util.Map;
  * @author rucka
  */
 @RestController
+@RequestMapping("/api")
 public class MeteoDataController {
 
     private Logger logger = LoggerFactory.getLogger(MeteoDataController.class);
@@ -50,7 +48,7 @@ public class MeteoDataController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @RequestMapping(path = "/api/sensors", method = RequestMethod.POST)
+    @RequestMapping(path = "/sensors", method = RequestMethod.POST)
     public ResponseEntity meteoLegacy(@RequestBody MeteoData meteoData) throws IOException {
         logger.info("data was received, from point {}", meteoData.getLocationId());
         meteoDataRepository.create(meteoData, true);
@@ -68,4 +66,10 @@ public class MeteoDataController {
         }
         return new ResponseEntity(HttpStatus.CREATED);
     }
+
+    @RequestMapping(path = "/sensors/{locationId}/last", method = RequestMethod.GET)
+    public info.horske.meteo.application.MeteoData meteoLegacy(@PathVariable("locationId") String locationId) {
+        return meteoDataRepository.readLast(locationId);
+    }
+
 }
