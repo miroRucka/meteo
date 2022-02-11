@@ -10,10 +10,6 @@ public interface MeteoDataRepository {
 
     void create(MeteoData meteoData, boolean useSysTimestam);
 
-    List<MeteoData> readAll();
-
-    List<MeteoData> readLatestByDate(Date fromTime);
-
     info.horske.meteo.application.MeteoData readLast(String pointId);
 
 }

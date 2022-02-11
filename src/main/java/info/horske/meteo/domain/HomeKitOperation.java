@@ -14,6 +14,14 @@ import java.util.stream.Collectors;
  */
 public class HomeKitOperation {
 
+    public static final String POINT_ID = "pointId";
+    public static final String TOPIC = "topic";
+    public static final String TYPE = "type";
+    public static final String SENSOR_KEY = "sensorKey";
+
+    public static final String TEMP = "temp";
+    public static final String HUM = "hum";
+
     private Map<String, Object> data = new HashMap<>();
 
     public HomeKitOperation(MeteoData meteoData, ObjectMapper objectMapper, InputStream metadataFile) throws IOException {
@@ -29,27 +37,27 @@ public class HomeKitOperation {
     }
 
     private String getPointId(Map<String, String> map) {
-        return map.get("pointId");
+        return map.get(POINT_ID);
     }
 
     private String getTopic(Map<String, String> map) {
-        return map.get("topic");
+        return map.get(TOPIC);
     }
 
     private String getType(Map<String, String> map) {
-        return map.get("type");
+        return map.get(TYPE);
     }
 
     private String getSensorKey(Map<String, String> map) {
-        return map.get("sensorKey");
+        return map.get(SENSOR_KEY);
     }
 
     private Object getValue(Map<String, String> map, MeteoData meteoData) {
         String type = getType(map);
-        if (type.equals("temp")) {
+        if (type.equals(TEMP)) {
             Optional<Temperature> temp = meteoData.getTemperature() != null ? meteoData.getTemperature().stream().filter(t -> t.getKey().equals(getSensorKey(map))).findAny() : Optional.<Temperature>empty();
             return temp.isPresent() ? temp.get().getValue() : null;
-        } else if (type.equals("hum")) {
+        } else if (type.equals(HUM)) {
             return meteoData.getHumidity();
         }
         return null;

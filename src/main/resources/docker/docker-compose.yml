@@ -1,0 +1,67 @@
+version: '3.9'
+services:
+  influx:
+    image: influxdb:1.8
+    container_name: influx
+    environment:
+      - DOCKER_INFLUXDB_INIT_USERNAME=suslik
+      - DOCKER_INFLUXDB_INIT_PASSWORD=Suslik123
+    volumes:
+      - D:/meteo_docker_env/influxdb:/var/lib/influxdb
+    ports:
+      - 8086:8086
+    networks:
+      - meteo
+
+  activemq:
+    image: rmohr/activemq
+    container_name: activemq
+    ports:
+      - 61616:61616
+      - 8161:8161
+      - 1883:1883
+    networks:
+      - meteo
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    volumes:
+      - D:/meteo_docker_env/grafana:/var/lib/grafana
+    ports:
+      - 3000:3000
+    networks:
+      - meteo
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - D:/meteo_docker_env/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - 9090:9090
+    networks:
+      - meteo
+
+  meteo:
+    image: meteo:0.0.10-SNAPSHOT
+    container_name: meteo
+    ports:
+      - 8080:8080
+    networks:
+      - meteo
+    depends_on:
+      - influx
+      - activemq
+
+  posamid:
+    image: docker.io/meteo/posamid
+    container_name: posamid
+    ports:
+      - 8083:8080
+    networks:
+      - meteo
+
+networks:
+  meteo:
+    driver: bridge

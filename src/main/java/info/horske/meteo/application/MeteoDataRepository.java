@@ -1,11 +1,6 @@
 package info.horske.meteo.application;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.BasicDBObjectBuilder;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoDatabase;
 import info.horske.meteo.domain.MeteoData;
-import org.bson.Document;
 import org.influxdb.InfluxDB;
 import org.influxdb.dto.Point;
 import org.influxdb.dto.Query;
@@ -17,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -33,9 +27,6 @@ public class MeteoDataRepository implements info.horske.meteo.domain.MeteoDataRe
     private InfluxDB influxDB;
 
     @Autowired
-    private MongoDatabase mongoDatabase;
-
-    @Autowired
     private InfluxPointBuilder influxPointBuilder;
 
     @Autowired
@@ -43,9 +34,6 @@ public class MeteoDataRepository implements info.horske.meteo.domain.MeteoDataRe
 
     @Value("${spring.influx.sensor.table}")
     private String influxSensorTable;
-
-    @Value("${spring.mongodb.sensor.table}")
-    private String mongoSensorTable;
 
     @Value("${spring.influx.db}")
     private String influxUsesDb;
@@ -69,21 +57,6 @@ public class MeteoDataRepository implements info.horske.meteo.domain.MeteoDataRe
     }
 
     @Override
-    public List<MeteoData> readAll() {
-        FindIterable<Document> data = mongoDatabase.getCollection("sensors").find();
-        return meteoDataAssembler.fromList(data);
-
-    }
-
-    @Override
-    public List<MeteoData> readLatestByDate(Date fromTime) {
-        BasicDBObject gtQuery = new BasicDBObject();
-        gtQuery.put("timestamp", BasicDBObjectBuilder.start("$gte", fromTime).get());
-        FindIterable<Document> data = mongoDatabase.getCollection("sensors").find(gtQuery);
-        return meteoDataAssembler.fromList(data);
-    }
-
-    @Override
     public info.horske.meteo.application.MeteoData readLast(String locationId) {
         int limit = 1;
         String select = "SELECT * FROM \"" + influxSensorTable + "\" WHERE locationId = '" + locationId + "' ORDER BY time DESC LIMIT " + limit;
@@ -95,9 +68,5 @@ public class MeteoDataRepository implements info.horske.meteo.domain.MeteoDataRe
         return meteoDatas != null ? meteoDatas.stream().findAny().get() : null;
     }
 
-
-    //@PostConstruct
-    public void onDestroy() throws Exception {
-    }
 }
 
